@@ -1,0 +1,68 @@
+
+;
+; -------------------------------------->>>
+; Custom G-code: Printer - Start - START
+M304 P212 I39 D287 ; Set PID for bed.
+T0 ; Default to start with T0
+G21 ; set units to mm
+M851 Z-5.1 ; Z-probe height. Bigger value moves bed closer to nozzle.
+; At the moment, 5.1mm gives 0.2mm at first layer.
+; Start pre-heating -15C
+M140 S{first_layer_bed_temperature[0] - 15} ; heat bed up to first layer temperature -15C.
+{if first_layer_temperature[0] > 100} 
+  M104 S{first_layer_temperature[0] - 40} T0 ; preheat right nozzle -40C
+{endif}
+{if first_layer_temperature[1] > 100} 
+  M104 S{first_layer_temperature[1] - 40} T1 ; preheat left nozzle -40C
+{endif}
+
+G28 ; Home all axes
+; Wait for bed to reach final temp before Z-probing bed
+M907 X0.3 Y0.3 Z0.3 E0.3 B0.3 ; Lower stepper VREFs while heating
+M190 S{first_layer_bed_temperature[0] - 15}; Wait for bed to heat up: temp -15C.
+M104 S[first_layer_temperature_0] T0; set 1st nozzle heater to first layer temperature
+M104 S[first_layer_temperature_1] T1; set 2nd nozzle heater to first layer temperature
+M190 S[first_layer_bed_temperature]; Wait for bed to heat up. 
+M907 X0.6 Y0.6 Z0.6 E0.5 B0.5; Normal stepper VREFs
+G4 P50 ; Wait 50ms for VREF to settle
+G29 ; Auto bed level probing
+M420 S1 Z5 ; Use bed auto level, fadeout 5mm.
+G0 Z20 F5000 ; Lower bed for easy nozzle purge+clean.
+G0 X-7 Y30 F5000 ; move to wait position off table
+; Wait for extruders to reach final temp
+M907 X0.3 Y0.3 Z0.3 E0.3 B0.3 ; Lower stepper VREFs while heating
+M109 S[first_layer_temperature_0] T0; set 1st nozzle heater to first layer temperature and wait
+M109 S[first_layer_temperature_1] T1; set 2nd nozzle heater to first layer temperature and wait
+M907 X0.6 Y0.6 Z0.6 E0.5 B0.5; Normal stepper VREFs
+G4 P50 ; Wait 50ms for VREF to settle
+
+; Purge nozzle 1 or 1+2
+;------------------------
+{if first_layer_temperature[0] > 0 and first_layer_temperature[1] > 0} ; Both extruders are used.
+  ; Initiate Standby tool.
+  T{1- initial_tool} ; Standby tool.
+  G92 E0 ; Zero extruders
+  G1 E20 F{60 * deretract_speed[1- initial_tool]}  ; Purge nozzle, use same speed as for deretraction.
+  G1 E-[retract_length_toolchange] F{60 * retract_speed[1- initial_tool]}  ; Retract the tool not to be used at the moment.
+  ; === Post process vars ===>>>
+  ; TOOLS 2
+  ; FIRST_TOOLCHANGE_EXTRA_RESTART 30 mm, manual setting here.
+  ; RETRACT_LENGTH_TOOLCHANGE {retract_length_toolchange[1- initial_tool]} 
+  ; RETRACT_RESTART_EXTRA_TOOLCHANGE {retract_restart_extra_toolchange[1- initial_tool]} 
+  ; RETRACT_SPEED {60 * retract_speed[1- initial_tool]} 
+  ; DERETRACT_SPEED {60 * deretract_speed[1- initial_tool]} 
+  ; <<<=== Post process vars ===
+{else}
+  ; TOOLS 1
+{endif}
+
+T[initial_tool] ; Active tool.
+G92 E0 ; Zero extruders
+G1 E20 F{60 * deretract_speed[initial_tool]}  ; Purge nozzle, use same speed as for deretraction.
+
+G0 Z0.4 F1000 ; Position nozzle
+;G0 X20 Y10 Z0.15 F1000 ; Slow wipe
+; Custom G-code: Printer - Start - END
+; <<<--------------------------------------
+
+
