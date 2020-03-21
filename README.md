@@ -24,7 +24,7 @@ The code gets parameters from the *custom gcode sections* in PrusaSlicer.
 
 
 
-Initial G-Code looks like this (when output from PrusaSlicer, do not use it, use the 7z-files here).
+Initial G-Code looks like this (when output from PrusaSlicer, do not use it, use the files here).
 The comments in *=== Post process vars ===* are important:
 - - - - - - -
 ```
@@ -54,7 +54,7 @@ G1 E20 F600  ; Purge nozzle, use same speed as for deretraction.
 
 
 
-And when the very first tool change occurs, the head is moved off table and then purged. You can purge anywhere you like. I started with a wipe-tower, but why: lets purge outside the bed. (Again, do not use this code, use the 7z files.)
+And when the very first tool change occurs, the head is moved off table and then purged. You can purge anywhere you like. I started with a wipe-tower, but why: lets purge outside the bed. (Again, do not use this code, use the files.)
 - - - - - - -
 
 ```
