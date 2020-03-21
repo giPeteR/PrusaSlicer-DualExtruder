@@ -21,3 +21,54 @@ Solution:
 
 She post processing is done automatically by PrusaSlicer. The code is in Python (and this is not a tutorial to get Python running).
 The code gets parameters from the *custom gcode sections* in PrusaSlicer.
+
+
+
+Initial G-Code looks like this, the comments in *=== Post process vars ===* are important:
+- - - - - - -
+>I think you should use an
+
+>; Purge nozzle 1 or 1+2
+
+>;------------------------
+
+> ; Both extruders are used.
+
+>  ; Initiate Standby tool.
+
+>  T1 ; Standby tool.
+>  G92 E0 ; Zero extruders
+>  G1 E20 F600  ; Purge nozzle, use same speed as for deretraction.
+>  G1 E-5 F1800  ; Retract the tool not to be used at the moment.
+>  ; === Post process vars ===>>>
+>  ; TOOLS 2
+>  ; FIRST_TOOLCHANGE_EXTRA_RESTART 30 mm, manual setting here.
+>  ; RETRACT_LENGTH_TOOLCHANGE 5 
+>  ; RETRACT_RESTART_EXTRA_TOOLCHANGE 0.2 
+>  ; RETRACT_SPEED 1800 
+>  ; DERETRACT_SPEED 600 
+>  ; <<<=== Post process vars ===
+>
+>T0 ; Active tool.
+>G92 E0 ; Zero extruders
+>G1 E20 F600  ; Purge nozzle, use same speed as for deretraction.
+- - - - - - -
+
+
+
+And when the very first tool change occurs, the head is moved off table and then purged. You can purge anywhere you like. I started with a wipe-tower, but why: lets purge outside the bed.
+- - - - - - -
+
+; -------------------------------------->>>
+; Custom G-code: Printer - Tool change - START
+; INITIAL_TOOL 0
+; NEXT_EXTRUDER 1
+T1 ; Do the one time UnRetract for the tool that has not been used until now.
+G0 X-7 Y30 F5000 ; Move to wait position off table and purge next tool.
+G92 E0 ; Zero extruders
+G1 E35.2 F600 ; UnRetract
+; LAYER_NUM 2
+; Custom G-code: Printer - Tool change - END
+; <<<--------------------------------------
+
+
