@@ -1,0 +1,25 @@
+
+;
+; -------------------------------------->>>
+; Custom G-code: Printer - End - START
+G1 Z+5
+; Retract before we turn off temperature.
+{if first_layer_temperature[0] > 0 }
+  T0
+  G1 E-[retract_length_toolchange] F{60 * retract_speed[0]}  ; Retract after use.
+{endif}
+{if first_layer_temperature[1] > 0 }
+  T1
+  G1 E-[retract_length_toolchange] F{60 * retract_speed[1]}  ; Retract after use.
+{endif}
+T0
+M104 T0 S0 ; Turn off extruder 0 temperature.
+M104 T1 S0 ; Turn off extruder 1 temperature.
+M140 S0 ; Turn off bed temperature.
+G0 Z165; Table to bottom.
+G28 X0 Y0 ; Home X & Y axis.
+M18     ; Disable motors.
+M106 S150 ; Set fan to 150 (0-255).
+; Custom G-code: Printer - End - END
+; <<<--------------------------------------
+
