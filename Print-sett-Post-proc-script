@@ -1,0 +1,4 @@
+This is the Print Settings
+- Output options
+- Post processing scripts
+"C:\Program Files\Python\python.exe" \\3d-computer\c\Peter\3D_printer\Post_process\post_process.py;
