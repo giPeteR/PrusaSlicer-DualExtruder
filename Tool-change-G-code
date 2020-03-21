@@ -1,0 +1,10 @@
+
+;
+; -------------------------------------->>>
+; Custom G-code: Printer - Tool change - START
+; INITIAL_TOOL [initial_tool]
+; NEXT_EXTRUDER [next_extruder]
+; LAYER_NUM [layer_num]
+; Custom G-code: Printer - Tool change - END
+; <<<--------------------------------------
+
