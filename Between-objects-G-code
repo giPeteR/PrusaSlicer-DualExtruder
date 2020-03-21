@@ -1,0 +1,10 @@
+
+;
+; -------------------------------------->>>
+; Custom G-code: Printer - Between objects (sequiential printing) - START
+; INIT_T: [initial_tool]
+; NEXT_T: [next_extruder]
+; PREV_T: [previous_extruder]
+; Custom G-code: Printer - Between objects (sequiential printing) - END
+; <<<--------------------------------------
+
