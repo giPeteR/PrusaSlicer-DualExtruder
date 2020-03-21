@@ -1,5 +1,5 @@
 # PrusaSlicer-DualExtruder
-## How to make dual extruders work with PrusaSlicer.
+## How to make dual extruders work with PrusaSlicer
 * Skip the crap and start reading at; *"OKAY, problem - solution:"*
 
 Having a dual extruder printer (Customized Marlin FW) and changing from Simplify3D to PrusaSlicer needed some work-arounds.
@@ -15,9 +15,9 @@ Why should they? Well, maybe because they used open source code in the first pla
 ## *OKAY, problem - solution:*
 ### Problem: 
 * https://github.com/prusa3d/PrusaSlicer/issues/2710#issue-476282321
-* When using dual extruders, the 2nd extruder doesn't get Retract-UnRetract gcode as it should. First is't oozing a lot due to missing Retract. Then it's missing the UnRetract for the first toolchange. Thus giving a severe underextrution for quite some time, i. e. things won't get printed at all.
+* When using dual extruders, the 2nd extruder doesn't get Retract-UnRetract gcode as it should. First it's oozing a lot due to missing Retract. Then it's missing the UnRetract for the first toolchange. Thus giving a severe underextrution for quite some time, i. e. things won't get printed at all.
 ### Solution:
-* Having a post processing script that inserts a lot of extruder priming the 1st time the 2nd extruder is activated.
+* Having a post processing code that inserts a lot of extruder priming the first time the 2nd extruder is activated.
 
 She post processing is done automatically by PrusaSlicer. The code is in Python (and this is not a tutorial to get Python running).
 The code gets parameters from the *custom gcode sections* in PrusaSlicer.
