@@ -19,12 +19,13 @@ Why should they? Well, maybe because they used open source code in the first pla
 ### Solution:
 * Having a post processing code that inserts a lot of extruder priming the first time the 2nd extruder is activated.
 
-She post processing is done automatically by PrusaSlicer. The code is in Python (and this is not a tutorial to get Python running).
+The post processing is done automatically by PrusaSlicer. The code is in Python *(and this is not a tutorial to get Python running)*.
 The code gets parameters from the *custom gcode sections* in PrusaSlicer.
 
 
 
-Initial G-Code looks like this, the comments in *=== Post process vars ===* are important:
+Initial G-Code looks like this (when output from PrusaSlicer, do not use it, use the 7z-files here).
+The comments in *=== Post process vars ===* are important:
 - - - - - - -
 ```
 ; Purge nozzle 1 or 1+2
@@ -53,7 +54,7 @@ G1 E20 F600  ; Purge nozzle, use same speed as for deretraction.
 
 
 
-And when the very first tool change occurs, the head is moved off table and then purged. You can purge anywhere you like. I started with a wipe-tower, but why: lets purge outside the bed.
+And when the very first tool change occurs, the head is moved off table and then purged. You can purge anywhere you like. I started with a wipe-tower, but why: lets purge outside the bed. (Again, do not use this code, use the 7z files.)
 - - - - - - -
 
 ```
@@ -70,4 +71,6 @@ G1 E35.2 F600 ; UnRetract
 ; <<<--------------------------------------
 ```
 
+
+Hope this helps. It works really well (after two weeks of thesting.)
 
